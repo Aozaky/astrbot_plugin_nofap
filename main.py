@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 
 
-def read_html_template(filepath="index.html"):
+def read_html_template(filepath="rank.html"):
     """读取HTML模板文件内容并返回字符串"""
     base_path = os.path.dirname(__file__)
     absolute_path = os.path.join(base_path, filepath)
