@@ -1,9 +1,23 @@
-# helloworld
+# AstrBot 群内戒色榜插件！
 
-AstrBot 插件模板
+## 功能
+当看到AstrBot插件商店有三个关于🦌的插件时心都凉透了。现在年轻人都这么放纵自己吗？
+**万万不可！**
+**重铸戒🦌荣光，吾辈义不容辞！**
 
-A template plugin for AstrBot plugin feature
 
-# 支持
+## 指令
 
-[帮助文档](https://astrbot.app)
+- **/nofap mark** : 戒色打卡
+- **/nofap update**(or **to**) [**一个数字**] : 直接修改戒色天数
+- **/nofap rank** : 查看群内戒色榜
+- **/nofap fail**(or **day0**) : 戒色失败，重置天数
+
+
+## 配置
+有关 bot 输出语句请直接在本地进行更改。
+
+
+## 展示
+
+![展示](.github/show_rank.jpg)

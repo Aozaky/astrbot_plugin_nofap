@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 萌萌戒色榜 🌟</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        :root {
+            --primary-color: #FF9999;
+            --secondary-color: #FFD6E7;
+            --accent-color: #FF6B9E;
+            --text-color: #5D5D5D;
+            --bg-color: #FFF5F8;
+            --card-bg: #FFFFFF;
+            --border-color: #FFD6E7;
+            --table-header: #FFE6F2;
+            --shadow: rgba(253, 150, 186, 0.15);
+            --title-font: 'Noto Sans SC', sans-serif;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80" opacity="0.1"><path d="M30,20 Q40,5 50,20 L55,30 Q70,40 55,50 L50,60 Q40,75 30,60 L25,50 Q10,40 25,30 L30,20" fill="%23FFB6C1"/></svg>');
+            background-size: 200px;
+        }
+        
+        .rank-container {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px var(--shadow);
+            padding: 30px;
+            max-width: 700px;
+            margin: 0 auto;
+            border: 2px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 樱花装饰 */
+        .rank-container::before,
+        .rank-container::after {
+            content: "🌸";
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.6;
+        }
+        
+        .rank-container::before {
+            top: 15px;
+            left: 15px;
+        }
+        
+        .rank-container::after {
+            bottom: 15px;
+            right: 15px;
+        }
+        
+        h1 {
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: var(--title-font);
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(255, 182, 193, 0.3);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h1::before,
+        h1::after {
+            content: "✨";
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+        
+        h1::before {
+            left: -35px;
+        }
+        
+        h1::after {
+            right: -35px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--table-header);
+            color: var(--accent-color);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: rgba(255, 214, 231, 0.1);
+        }
+        
+        .rank-number {
+            font-weight: 700;
+            color: #FF6B9E;
+            font-size: 18px;
+            position: relative;
+        }
+        
+        /* 添加前三名的特殊标记 */
+        .rank-1::before, .rank-2::before, .rank-3::before {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+        }
+        
+        .rank-1::before {
+            content: "🥇";
+        }
+        
+        .rank-2::before {
+            content: "🥈";
+        }
+        
+        .rank-3::before {
+            content: "🥉";
+        }
+        
+        .pagination {
+            text-align: center;
+            font-size: 14px;
+            color: var(--accent-color);
+            margin-top: 15px;
+            font-style: italic;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--accent-color);
+            font-style: italic;
+        }
+        
+        .user-name {
+            font-weight: 500;
+        }
+        
+        .days {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+        
+        .days::after {
+            content: " 天";
+            font-weight: normal;
+            font-size: 0.9em;
+        }
+        
+        .date {
+            font-size: 0.9em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="rank-container">
+        <h1>萌萌戒色榜</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>排名</th>
+                    <th>用户名</th>
+                    <th>连续天数</th>
+                    <th>开始日期</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rank, user in items %}
+                <tr>
+                    <td class="rank-number {% if rank <= 3 %}rank-{{ rank }}{% endif %}">{{ rank }}</td>
+                    <td class="user-name">{{ user.user_name }}</td>
+                    <td class="days">{{ user.days }}</td>
+                    <td class="date">{{ user.start_date }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if ranked_users_data|length >= 20 %}
+        <p class="pagination">...仅显示前 20 名...</p>
+        {% endif %}
+        <p class="footer">✨ 持之以恒，方能成功 ✨</p>
+    </div>
+</body>
+</html>
