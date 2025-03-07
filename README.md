@@ -9,10 +9,10 @@
 ## 指令
 
 - **/nofap mark** : 戒色打卡
-- **/nofap update**(or **to**) [**一个数字**] : 直接修改戒色天数
+- **/nofap to** <**days**> : 直接修改戒色天数
 - **/nofap rank** : 查看群内戒色榜
-- **/nofap fail**(or **day0**) : 戒色失败，重置天数
-
+- **/nofap fail** : 戒色失败，重置天数
+- **/nofap help** : 查看帮助信息
 
 ## 配置
 有关 bot 输出语句请直接在本地进行更改。

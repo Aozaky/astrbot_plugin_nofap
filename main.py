@@ -68,7 +68,7 @@ class NoFap(Star):
         pass
 
 
-    @nofap.command("mark", alias = ["check"])
+    @nofap.command("mark")
     async def mark(self, event: AstrMessageEvent):
         """戒色打卡"""
         group_id = event.get_group_id()
@@ -97,8 +97,8 @@ class NoFap(Star):
 
 
 
-    @nofap.command("update", alias = ["to"])
-    async def update(self, event: AstrMessageEvent, days:int):
+    @nofap.command("to")
+    async def to(self, event: AstrMessageEvent, days:int):
         '''修改戒色天数'''
         if days < 0:
             yield event.plain_result(f"为什么要输入负数啊喂！")
@@ -159,7 +159,7 @@ class NoFap(Star):
 
 
 
-    @nofap.command("fail", alias=["day0"])
+    @nofap.command("fail")
     async def fail(self, event: AstrMessageEvent):
         """戒色失败，重置天数"""
         group_id = event.get_group_id()
@@ -177,7 +177,20 @@ class NoFap(Star):
 
         yield event.plain_result("诶诶！戒色失败了吗！！好吧，已经把你的数据归零了~")
 
-
+    
+    @nofap.command("help")
+    async def help(self, event: AstrMessageEvent):
+        """帮助信息"""
+        yield event.plain_result(
+            "戒色榜插件指令：\n"
+            "1. nofap mark - 戒色打卡\n"
+            "2. nofap to <days> - 修改戒色天数\n"
+            "3. nofap rank - 查看戒色榜\n"
+            "4. nofap fail - 戒色失败，重置天数\n"
+            "5. nofap help - 显示帮助信息\n"
+        )
+    
+    
 
     async def terminate(self):
         self.save_data()
