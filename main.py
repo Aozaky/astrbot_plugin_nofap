@@ -24,7 +24,7 @@ DATA_FILE = "data/astrbot-nofap.json"
     name = "astrbot-nofap",
     author = "aoz",
     desc = "一个简单的群内戒色榜插件",
-    version = "v1.0.0"
+    version = "v1.1.0"
 )
 
 
@@ -61,7 +61,21 @@ class NoFap(Star):
         return self.nofap_data[group_id][user_id]
 
 
+    async def get_user_card(self, event: AstrMessageEvent, group_id, user_id):
+        """获取用户群名片"""
+        client = event.bot
+        payloads = {
+            "group_id": group_id,
+            "user_id": user_id,
+            "no_cache": True
+        }
+        response = await client.api.call_action('get_group_member_info', **payloads)
+        user_card = response.get('card', None)
+        
+        return user_card
 
+    
+    
     # nofap指令组
     @filter.command_group("nofap")
     def nofap(self):
@@ -73,13 +87,14 @@ class NoFap(Star):
         """戒色打卡"""
         group_id = event.get_group_id()
         user_id = event.get_sender_id()
+        user_card = await self.get_user_card(event, group_id, user_id)
         user_data = self.get_user_data(group_id, user_id)
         today = date.today()
         today_str = today.strftime("%Y-%m-%d")
 
 
 
-        user_data['user_name'] = event.get_sender_name() # 添加id对应的name
+        user_data['user_name'] = user_card or event.get_sender_name() # 添加id对应的name
 
 
         last_mark_date = user_data.get('last_mark_date') # 判断是否重复打卡
@@ -109,13 +124,14 @@ class NoFap(Star):
         
         group_id = event.get_group_id()
         user_id = event.get_sender_id()
+        user_card = await self.get_user_card(event, group_id, user_id)
         user_data = self.get_user_data(group_id, user_id)
         today = date.today()
         start_date = today - timedelta(days - 1)
         today_str = today.strftime("%Y-%m-%d")
         start_date_str = start_date.strftime("%Y-%m-%d")
         
-        user_data['user_name'] = event.get_sender_name() # 添加id对应的name
+        user_data['user_name'] = user_card or event.get_sender_name() # 添加id对应的name
         
         user_data['days'] = days
         user_data['start_date'] = start_date_str
@@ -135,11 +151,11 @@ class NoFap(Star):
         if group_id not in self.nofap_data or not self.nofap_data[group_id]:
             yield event.plain_result("本小姐定睛一看，当前戒色榜空空如也！还没有人开始戒色呢！")
             return
+        
             
         # 根据戒色天数排序用户
         ranked_users_data = sorted(self.nofap_data[group_id].items(), key=lambda item: item[1]['days'], reverse=True)
         items = []
-
 
         # 创建符合模板预期的数据格式 - 元组列表 [(排名, 用户数据), ...]
         for rank, (user_id, data) in enumerate(ranked_users_data, start=1):
